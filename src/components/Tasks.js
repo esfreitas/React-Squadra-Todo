@@ -41,8 +41,8 @@ const Tasks = () =>{
   function filter(){
     
     const listToFilter = listFilter.filter(item => {
-      return isOnlyPending ? item.status === "pendente" : true;
-    })
+      return !isOnlyPending ? item.status === "pendente" : true;
+    });
     setList(listToFilter);
     setIsOnlyPending(!isOnlyPending);
   }
@@ -70,10 +70,17 @@ const Tasks = () =>{
     <div className="App">
      <form onSubmit={adicionar}>
         <label>
-           <input type="text" name="task" />
+           <input type="text" name="task" id="task" />
         </label>
         <input type="submit" value="Adicionar"/>
      </form>
+
+     <div>
+        <a href="#" onClick={filter}>
+          {isOnlyPending ? "Todos" : "Pendentes"}
+        </a>
+      </div>
+
      <ul>
        {list.map((item, index)=>{
          return (
@@ -82,7 +89,7 @@ const Tasks = () =>{
                 {isEditing === item.id ? (
                     <input defaultValue={item.name} onBlur={(e)=>onBlur(e, item)} onKeyDown={(e)=>onKeyDown(e, item)} />
                 ) : (
-                    <b onClick={()=>toggle(item)}>{item.name}</b>
+                    <b onClick={()=>setIsEditing(item.id)}>{item.name}</b>
                 )}
             </span>
             <button onClick={()=> toggle(item)}>
