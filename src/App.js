@@ -20,9 +20,10 @@ function App() {
     setList([...list, task]);
   }
 
-  function done(item) {
+  function toggle(item) {
+    const statusToUpdate = item.status ==="pendente" ? "feito" : "pendente";
     const newList = list.map((t) => {
-      if (t.id === item.id) t.status = "feito";
+      if (t.id === item.id) t.status = statusToUpdate;
       return t;
     });
     setList(newList);
@@ -41,7 +42,7 @@ function App() {
          return (
           <li style={item.status === "feito" ? {textDecoration:"line-through"} : {}} key={index}>
             <span>{item.name}</span>
-            <button onClick={()=> done(item)}>
+            <button onClick={()=> toggle(item)}>
                 {item.status ==="feito" ?
                   <FaRegCheckSquare /> : 
                   <FaRegSquare />}
