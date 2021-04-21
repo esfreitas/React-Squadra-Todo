@@ -1,49 +1,68 @@
 import { useEffect, useState } from "react";
 import { FaRegCheckSquare, FaRegSquare } from "react-icons/fa";
-import { useParams } from "react-router-dom";
-
-
+import { useLocation, useParams } from "react-router-dom";
+import axios from 'axios';
+import {Form, Input, Button, Row, Col, Divider } from "antd";
+const endpoint = "http://localhost:3004";
 
 const Tasks = () =>{
 
   const params = useParams();
+  const location = useLocation();
   const [list, setList] = useState([]);
-  const [listFilter, setListFilter] = useState([]);
+  const [lista, setLista] = useState({});
   const [isOnlyPending, setIsOnlyPending] = useState(false);
   const [isEditing, setIsEditing] = useState("");
 
-  useEffect(()=>{
-      console.log(params);
-  },[params])
-
-  function adicionar(e) {
-    e.preventDefault();
-    console.log(e.target.task.value);
-    const task = {
-      id:new Date(),
-      name: e.target.task.value,
-      status: "pendente",
-    };
-    setList([...list, task]);
-    setListFilter([...list, task]);
-    document.getElementById("task").value="";
+  async function getTasks(id){
+    const res = await axios.get(`${endpoint}/tasks?list_id=${id}`);
+    if(res.status === 200){
+      setList(res.data);
+    }
   }
 
-  function toggle(item) {
-    const statusToUpdate = item.status ==="pendente" ? "feito" : "pendente";
-    const newList = list.map((t) => {
-      if (t.id === item.id) t.status = statusToUpdate;
-      return t;
-    });
-    setList(newList);
+  async function getList(id){
+    const res = await axios.get(`${endpoint}/lists/${id}`);
+    if(res.status === 200){
+      setLista(res.data);
+    }
+  }
+
+
+  useEffect(()=>{
+      console.log(params);
+      if (params.id){
+        getTasks(params.id);
+        getList(params.id);
+      }
+  },[location]);
+
+  async function onSubmit(values) {
+    const task = {
+      id:new Date(),
+      list_id: params.id,
+      name: values.task,
+      status: "pendente",
+    };
+
+    await axios.post(`${endpoint}/tasks`, task);
+    getTasks(params.id);
+  }
+
+  async function toggle(item) {
+    item.status = item.status === "pendente" ? "feito" : "pendente";
+    await axios.put(`${endpoint}/tasks/${item.id}`, item)
+    getTasks(params.id);
+
   }   
 
-  function filter(){
-    
-    const listToFilter = listFilter.filter(item => {
-      return !isOnlyPending ? item.status === "pendente" : true;
-    });
-    setList(listToFilter);
+  async function filter(){
+    let url =`${endpoint}/tasks`;
+    if (!isOnlyPending) {
+      url = url + `?status=pendente`;
+    }
+    const res = await axios.get(url);
+    if (res.status === 200) setList(res.data);
     setIsOnlyPending(!isOnlyPending);
   }
 
@@ -68,17 +87,26 @@ const Tasks = () =>{
 
   return (
     <div className="App">
-     <form onSubmit={adicionar}>
-        <label>
-           <input type="text" name="task" id="task" />
-        </label>
-        <input type="submit" value="Adicionar"/>
-     </form>
+      <h1>{lista && lista.name}</h1>
+      <Divider />
+
+     <Form onFinish={onSubmit}>
+       <Row>
+        <Col sm={20}>
+            <Form.Item name="task">
+              <Input id="task" />
+            </Form.Item>
+          </Col>
+          <Col sm={4}>
+              <Button htmlType="submit">Adicionar</Button>
+          </Col>
+        </Row>
+     </Form>
 
      <div>
-        <a href="#" onClick={filter}>
+        <Button type="link" onClick={filter}>
           {isOnlyPending ? "Todos" : "Pendentes"}
-        </a>
+        </Button>
       </div>
 
      <ul>
