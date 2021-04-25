@@ -17,7 +17,7 @@
     {
       "id": "2021-04-21T17:45:04.324Z",
       "list_id": "2021-04-21T17:33:18.347Z",
-      "name": "asdasdads",
+      "name": "eefff",
       "status": "feito"
     },
     {
@@ -54,7 +54,7 @@
       "id": "2021-04-21T17:51:10.659Z",
       "list_id": "2021-04-21T17:32:25.996Z",
       "name": "comer feijão",
-      "status": "pendente"
+      "status": "feito"
     },
     {
       "id": "2021-04-21T18:38:32.236Z",
@@ -73,6 +73,18 @@
       "list_id": "1",
       "name": "test",
       "status": "pendente"
+    },
+    {
+      "id": "2021-04-25T12:19:38.731Z",
+      "list_id": "2021-04-21T17:32:25.996Z",
+      "name": "asd",
+      "status": "feito"
+    },
+    {
+      "id": "2021-04-25T12:19:43.730Z",
+      "list_id": "2021-04-21T17:32:25.996Z",
+      "name": "marmita",
+      "status": "feito"
     }
   ]
 }

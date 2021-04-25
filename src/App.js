@@ -8,21 +8,24 @@ import "antd/dist/antd.css";
 
 
 
+
 function App() {
 
   return (
     <Layout.Content style={{padding: 20}}>
-      <Router>
-        <Link to="/">Todas as Listas</Link> 
-        <Switch>
-          <Route exact path="/">
-              <TaskLists />
-          </Route>
-          <Route exact path="/list/:id">
-              <Tasks />
-          </Route>
-        </Switch>
-      </Router>
+      <div className="background">
+        <Router>
+          {/*<Link to="/">Todas as Listas</Link> */}
+          <Switch>
+            <Route exact path="/">
+                <TaskLists />
+            </Route>
+            <Route exact path="/list/:id">
+                <Tasks />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
     </Layout.Content>
   );
 }

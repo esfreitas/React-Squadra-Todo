@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Form, PageHeader, Input, Button, Row, Col, Table, Space, Popconfirm, message} from "antd";
 import axios from "axios";
+import "./TasksLists.css";
 import { FaList, FaTrash } from "react-icons/fa";
 import { useHistory } from 'react-router-dom';
 
