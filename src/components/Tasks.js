@@ -58,7 +58,13 @@ const Tasks = () =>{
     await axios.put(`${endpoint}/tasks/${item.id}`, item)
     getTasks(params.id);
 
-  }   
+  } 
+  
+  async function edit(item) {
+    await axios.put(`${endpoint}/tasks/${item.id}`, item)
+    getTasks(params.id);
+
+  }  
 
   async function filter(){
     setIsAll(true);
@@ -71,7 +77,7 @@ const Tasks = () =>{
     setIsOnlyPending(!isOnlyPending);
     if (isAll){
       history.go(0);  
-    }  
+    }
   }
 
   function save(newName, item){
@@ -89,6 +95,7 @@ const Tasks = () =>{
 
   function onBlur(e, item){
       save(e.target.value, item);
+      edit(item)
   }
 
  
